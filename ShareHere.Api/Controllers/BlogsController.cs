@@ -7,10 +7,10 @@ namespace ShareHere.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BlogController : Controller
+    public class BlogsController : Controller
     {
         private readonly IBlogService<Blog> blogService;
-        public BlogController(IBlogService<Blog> blogService)
+        public BlogsController(IBlogService<Blog> blogService)
         {
             this.blogService = blogService;
         }

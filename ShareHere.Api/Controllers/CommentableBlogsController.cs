@@ -6,10 +6,10 @@ namespace ShareHere.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentableBlogController : Controller
+    public class CommentableBlogsController : Controller
     {
         private readonly ICommentableBlogService blogService;
-        public CommentableBlogController(ICommentableBlogService blogService)
+        public CommentableBlogsController(ICommentableBlogService blogService)
         {
             this.blogService = blogService;
         }
@@ -39,7 +39,7 @@ namespace ShareHere.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Boolean>> DeleteBlogByIdAsync(Guid id)
+        public async Task<ActionResult<bool>> DeleteBlogByIdAsync(Guid id)
         {
             return Ok(await blogService.DeleteBlogById(id));
         }
