@@ -7,14 +7,15 @@ namespace ShareHere.Service.Services
     public class BlogService : IBlogService<Blog>
     {
         private readonly IBlogRepository<Blog> blogRepository;
-        public BlogService(IBlogRepository<Blog> blogRepository)
+        public BlogService(IBlogRepository<Blog> repository)
         {
-            this.blogRepository = blogRepository;
+            this.blogRepository = repository;
         }
 
         public async Task<List<Blog>> GetAllBlogs()
         {
-            return await blogRepository.GetAll();
+            var blogs = await blogRepository.GetAll();
+            return blogs;
         }
 
         public async Task<Blog> GetBlogById(Guid id)

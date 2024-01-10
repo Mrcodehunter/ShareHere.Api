@@ -5,6 +5,7 @@ using ShareHere.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,60 +13,60 @@ namespace ShareHere.Repository.Repositories
 {
     public class CommentableBlogRepository : ICommentableBlogRepository
     {
-        private readonly ShareHereContext shareHereContext = null!;
+        private readonly ShareHereContext context;
         public CommentableBlogRepository(ShareHereContext shareHereContext)
         {
-            shareHereContext = shareHereContext ?? throw new ArgumentNullException(nameof(shareHereContext));
+            this.context = shareHereContext ?? throw new ArgumentNullException(nameof(shareHereContext));
         }
 
         public async Task<List<CommentableBlog>> GetAll()
         {
-            return await shareHereContext.CommentableBlogs.ToListAsync();
+            return await context.CommentableBlogs.ToListAsync();
         }
 
         public async Task<CommentableBlog> Get(Guid id)
         {
-            CommentableBlog? blog = await shareHereContext.CommentableBlogs.FindAsync(id);
+            CommentableBlog? blog = await context.CommentableBlogs.FindAsync(id);
             return blog;
         }
 
         public async Task<CommentableBlog> Add(CommentableBlog blog)
         {
-            shareHereContext.CommentableBlogs.Add(blog);
-            await shareHereContext.SaveChangesAsync();
+            context.CommentableBlogs.Add(blog);
+            await context.SaveChangesAsync();
             return blog;
         }
 
         public async Task<CommentableBlog> Update(CommentableBlog blog, Guid id)
         {
-            CommentableBlog? currentBlog = await shareHereContext.CommentableBlogs.FindAsync(id);
+            CommentableBlog? currentBlog = await context.CommentableBlogs.FindAsync(id);
             currentBlog.Title = blog.Title;
             currentBlog.Content = blog.Content;
-            currentBlog.Commemnts = blog.Commemnts;
-            await shareHereContext.SaveChangesAsync();
+            currentBlog.Comments = blog.Comments;
+            await context.SaveChangesAsync();
             return currentBlog;
         }
 
         public async Task<bool> Delete(Guid id)
         {
-            CommentableBlog? blog = await shareHereContext.CommentableBlogs.FindAsync(id);
-            shareHereContext.CommentableBlogs.Remove(blog);
-            await shareHereContext.SaveChangesAsync();
+            CommentableBlog? blog = await context.CommentableBlogs.FindAsync(id);
+            context.CommentableBlogs.Remove(blog);
+            await context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<string>> AddComment(Guid id, string comment)
+        public async Task<List<Comment>> AddComment(Comment comment)
         {
-            CommentableBlog? currentBlog = await shareHereContext.CommentableBlogs.FindAsync(id);
-            currentBlog.Commemnts.Add(comment);
-            await shareHereContext.SaveChangesAsync();
-            return currentBlog.Commemnts;
+            context.Comments.Add(comment);
+            await context.SaveChangesAsync();
+            var currentBlogComments = await context.Comments.Where(cmnt => cmnt.BlogId == comment.BlogId).ToListAsync();
+            return currentBlogComments;
         }
 
-        public async Task<List<string>> GetComments(Guid id)
+        public async Task<List<Comment>> GetComments(Guid id)
         {
-            CommentableBlog? currentBlog = await shareHereContext.CommentableBlogs.FindAsync(id);
-            return currentBlog.Commemnts;
+            var currentBlogComments = await context.Comments.Where(cmnt => cmnt.BlogId == id).ToListAsync();
+            return currentBlogComments;
         }
     }
 }

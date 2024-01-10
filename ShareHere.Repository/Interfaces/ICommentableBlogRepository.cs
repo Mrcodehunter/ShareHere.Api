@@ -4,7 +4,7 @@ namespace ShareHere.Repository.Interfaces
 {
     public interface ICommentableBlogRepository : IBlogRepository<CommentableBlog>
     {
-        Task<List<string>> AddComment(Guid id, string comment);
-        Task<List<string>> GetComments(Guid id);
+        Task<List<Comment>> AddComment(Comment comment);
+        Task<List<Comment>> GetComments(Guid id);
     }
 }

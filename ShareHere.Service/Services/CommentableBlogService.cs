@@ -44,12 +44,12 @@ namespace ShareHere.Service.Services
             return await commentableBlogRepository.Delete(id);
         }
 
-        public async Task<List<string>> AddComment(Guid id,  string comment)
+        public async Task<List<Comment>> AddComment(Comment comment)
         {
-            return await commentableBlogRepository.AddComment(id, comment);
+            return await commentableBlogRepository.AddComment(comment);
         }
 
-        public async Task<List<string>> GetAllComments(Guid id)
+        public async Task<List<Comment>> GetAllComments(Guid id)
         {
             return await commentableBlogRepository.GetComments(id);
         }

@@ -4,8 +4,8 @@ namespace ShareHere.Service.Interfaces
 {
     public interface ICommentableBlogService : IBlogService<CommentableBlog>
     {
-        Task<List<string>> AddComment(Guid id, string comment);
+        Task<List<Comment>> AddComment(Comment comment);
 
-        Task<List<string>> GetAllComments(Guid id);
+        Task<List<Comment>> GetAllComments(Guid id);
     }
 }

@@ -7,44 +7,45 @@ namespace ShareHere.Repository.Repositories
 {
     public class BlogRepository : IBlogRepository<Blog>
     {
-        private readonly ShareHereContext shareHereContext = null!;
+        private readonly ShareHereContext context;
         public BlogRepository(ShareHereContext shareHereContext)
         {
-            shareHereContext = shareHereContext ?? throw new ArgumentNullException(nameof(shareHereContext));
+            this.context = shareHereContext ?? throw new ArgumentNullException(nameof(shareHereContext));
         }
 
         public async Task<List<Blog>> GetAll()
         {
-            return await shareHereContext.Blogs.ToListAsync();
+            var blogs = await context.Blogs.ToListAsync();
+            return blogs;
         }
 
         public async Task<Blog> Get(Guid id)
         {
-            Blog? blog = await shareHereContext.Blogs.FindAsync(id);
+            Blog? blog = await context.Blogs.FindAsync(id);
             return blog;
         }
 
         public async Task<Blog> Add(Blog blog)
         {
-            shareHereContext.Blogs.Add(blog);
-            await shareHereContext.SaveChangesAsync();
+            context.Blogs.Add(blog);
+            await context.SaveChangesAsync();
             return blog;
         }
 
         public async Task<Blog> Update(Blog blog, Guid id)
         {
-            Blog? currentBlog = await shareHereContext.Blogs.FindAsync(id);
+            Blog? currentBlog = await context.Blogs.FindAsync(id);
             currentBlog.Title = blog.Title;
             currentBlog.Content = blog.Content;
-            await shareHereContext.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return currentBlog;
         }
 
         public async Task<bool> Delete(Guid id)
         {
-            Blog? blog = await shareHereContext.Blogs.FindAsync(id);
-            shareHereContext.Blogs.Remove(blog);
-            await shareHereContext.SaveChangesAsync();
+            Blog? blog = await context.Blogs.FindAsync(id);
+            context.Blogs.Remove(blog);
+            await context.SaveChangesAsync();
             return true;
         }
     }

@@ -44,10 +44,10 @@ namespace ShareHere.Api.Controllers
             return Ok(await blogService.DeleteBlogById(id));
         }
 
-        [HttpPost("{id}/comments")]
-        public async Task<ActionResult<List<string>>> AddCommentAsync(Guid id, string comment)
+        [HttpPost("comments")]
+        public async Task<ActionResult<List<Comment>>> AddCommentAsync(Comment comment)
         {
-            return Ok(await blogService.AddComment(id, comment));
+            return Ok(await blogService.AddComment(comment));
         }
 
         [HttpGet("{id}/comments")]
