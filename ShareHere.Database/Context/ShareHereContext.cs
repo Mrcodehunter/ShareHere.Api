@@ -12,6 +12,9 @@ namespace ShareHere.Database.Context
 
         // Define your entities as DbSet properties
         public DbSet<Blog> Blogs { get; set; }
+        public DbSet<TechBlog> TechBlogs { get; set; }
+        public DbSet<PoliticalBlog> PoliticalBlogs { get; set; }
+        public DbSet<FoodBlog> FoodBlogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<CommentableBlog> CommentableBlogs { get; set; }
 

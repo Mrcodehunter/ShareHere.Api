@@ -7,14 +7,16 @@ using ShareHere.Repository.Repositories;
 using ShareHere.Repository;
 using ShareHere.Service.Interfaces;
 using ShareHere.Service.Services;
+using ShareHere.Repository.FactoryRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<ShareHereContext>(options =>
 {
     options.UseInMemoryDatabase("InMemoryDatabase");
-});
+}, ServiceLifetime.Singleton);  // Singleton pattern for DbContext
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -24,13 +26,15 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IBlogRepository<Blog>, BlogRepository>();
-builder.Services.AddScoped<IBlogRepository<CommentableBlog>, CommentableBlogRepository>();
-builder.Services.AddScoped<ICommentableBlogRepository, CommentableBlogRepository>();
+// Singletone objects for classes through dependency injection
+builder.Services.AddSingleton<IBlogFactoryRepository, BlogFactoryRepository>();
+builder.Services.AddSingleton<IBlogRepository<Blog>, BlogRepository>();
+builder.Services.AddSingleton<IBlogRepository<CommentableBlog>, CommentableBlogRepository>();
+builder.Services.AddSingleton<ICommentableBlogRepository, CommentableBlogRepository>();
 
-builder.Services.AddScoped<IBlogService<Blog>, BlogService>();
-builder.Services.AddScoped<IBlogService<CommentableBlog>, CommentableBlogService>();
-builder.Services.AddScoped<ICommentableBlogService, CommentableBlogService>();
+builder.Services.AddSingleton<IBlogService<Blog>, BlogService>();
+builder.Services.AddSingleton<IBlogService<CommentableBlog>, CommentableBlogService>();
+builder.Services.AddSingleton<ICommentableBlogService, CommentableBlogService>();
 
 var app = builder.Build();
 
